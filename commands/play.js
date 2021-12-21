@@ -29,11 +29,7 @@ module.exports = {
         adapterCreator: message.guild.voiceAdapterCreator,
       });
 
-      const player = createAudioPlayer({
-        behaviors: {
-          noSubscriber: NoSubscriberBehavior.Pause,
-        },
-      });
+      const player = createAudioPlayer();
       connection.subscribe(player);
 
       if (!ytdl.validateURL(args[0])) return console.log("Merda");
@@ -46,7 +42,7 @@ module.exports = {
         url: songInfo.videoDetails.video_url,
       };
 
-      const stream = await ytdl(song.url, { filter: "audioonly" });
+      const stream = ytdl(song.url, { filter: "audioonly" });
 
       const resource = createAudioResource(stream, {
         inlineVolume: true,
@@ -56,6 +52,7 @@ module.exports = {
       });
       resource.volume.setVolume(0.5);
 
+      console.log("Tste");
       player.play(resource);
 
       player.on(AudioPlayerStatus.Playing, () => {
